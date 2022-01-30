@@ -1,0 +1,13 @@
+
+#User specified files
+#####################################
+sandbox
+
+#IDE specific files
+######################################
+.vscode
+
+
+#Security sensitive data / My stockpile :)
+######################################
+GIT_repo_location.txt
