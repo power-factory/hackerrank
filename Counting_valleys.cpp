@@ -4,45 +4,43 @@ using namespace std;
 
 string ltrim(const string &);
 string rtrim(const string &);
+vector<string> split(const string &);
 
 /*
- * Complete the 'countingValleys' function below.
+ * Complete the 'serviceLane' function below.
  *
- * The function is expected to return an INTEGER.
+ * The function is expected to return an INTEGER_ARRAY.
  * The function accepts following parameters:
- *  1. INTEGER steps
- *  2. STRING path
+ *  1. INTEGER n
+ *  2. 2D_INTEGER_ARRAY cases
  */
 
-int countingValleys(int steps, string path)
+// This was tricky challange for me. It is due to fact that function description is wrong.
+// Multiple people reported not pasing "width" as function argument. I modified it!
+
+vector<int> serviceLane(int n, vector<int> width, vector<vector<int>> cases)
 {
-    int valeys{0};
-    auto index = path.find("DU");
-    while( index != std::string::npos)
+    std::vector<int> maximumVehicleWidth;
+    for (auto pair : cases)
     {
-        valeys++;
-        path = path.substr(index+1);
+        int enterIndex = pair[0];
+        int exitIndex = pair[1]+1;
+        //STL algorithms operate on range [first,last) so I need to add 1 to reach last element
+        auto vehicleWidth = *std::min_element(width.begin() + enterIndex, width.begin() + exitIndex);
+        maximumVehicleWidth.push_back(vehicleWidth);
     }
-    return valeys;
+    return maximumVehicleWidth;
 }
 
 int main()
 {
-    ofstream fout(getenv("OUTPUT_PATH"));
+    int n = 5;
+    int t{5};
+    vector<int> width = {1, 2, 2, 2, 1};
 
-    string steps_temp;
-    getline(cin, steps_temp);
+    vector<vector<int>> cases = {{2, 3}, {1, 4}, {2, 4}, {2, 4}, {2, 3}};
 
-    int steps = stoi(ltrim(rtrim(steps_temp)));
-
-    string path;
-    getline(cin, path);
-
-    int result = countingValleys(steps, path);
-
-    fout << result << "\n";
-
-    fout.close();
+    vector<int> result = serviceLane(n, width, cases);
 
     return 0;
 }
@@ -67,4 +65,23 @@ string rtrim(const string &str)
         s.end());
 
     return s;
+}
+
+vector<string> split(const string &str)
+{
+    vector<string> tokens;
+
+    string::size_type start = 0;
+    string::size_type end = 0;
+
+    while ((end = str.find(" ", start)) != string::npos)
+    {
+        tokens.push_back(str.substr(start, end - start));
+
+        start = end + 1;
+    }
+
+    tokens.push_back(str.substr(start));
+
+    return tokens;
 }
