@@ -7,54 +7,40 @@ string rtrim(const string &);
 vector<string> split(const string &);
 
 /*
- * Complete the 'getTotalX' function below.
+ * Complete the 'serviceLane' function below.
  *
- * The function is expected to return an INTEGER.
+ * The function is expected to return an INTEGER_ARRAY.
  * The function accepts following parameters:
- *  1. INTEGER_ARRAY a
- *  2. INTEGER_ARRAY b
+ *  1. INTEGER n
+ *  2. 2D_INTEGER_ARRAY cases
  */
 
-int getMaxValue(std::vector<int> v)
-{
-    auto it = std::max_element(v.begin(), v.end());
-    return *it;
-}
-int getMinValue(std::vector<int> v)
-{
-    auto it = std::min_element(v.begin(), v.end());
-    return *it;
-}
+// This was tricky challange for me. It is due to fact that function description is wrong.
+// Multiple people reported not pasing "width" as function argument. I modified it!
 
-
-int getTotalX(vector<int> a, vector<int> b)
+vector<int> serviceLane(int n, vector<int> width, vector<vector<int>> cases)
 {
-    int maxValue = getMaxValue(a);
-    int minValue = getMinValue(b);
-    int counter{};
-    std::vector<int> combined = a;
-    combined.insert(combined.end(), b.begin(), b.end());
-    //combined - vector containg all of the numbers that needs to be checked
-    for(int divisor = maxValue; divisor<= minValue;divisor++){
-        bool flag = false;
-        for(int element : a){
-            if(divisor % element != 0) {flag = true;}
-        }
-        for(int element :b){
-            if(element % divisor != 0) {flag = true;}
-        }
-        if (!flag){
-            counter++;
-        }
+    std::vector<int> maximumVehicleWidth;
+    for (auto pair : cases)
+    {
+        int enterIndex = pair[0];
+        int exitIndex = pair[1];
+
+        auto vehicleWidth = *std::min_element(width.begin() + enterIndex, width.begin() + exitIndex+1);
+        maximumVehicleWidth.push_back(vehicleWidth);
     }
-    return counter;
+    return maximumVehicleWidth;
 }
 
 int main()
 {
-    std::vector<int> arr = {2, 4};
-    std::vector<int> brr = {16, 32, 96};
-    int total = getTotalX(arr, brr);
+    int n = 5;
+    int t{5};
+    vector<int> width = {1, 2, 2, 2, 1};
+
+    vector<vector<int>> cases = {{2, 3}, {1, 4}, {2, 4}, {2, 4}, {2, 3}};
+
+    vector<int> result = serviceLane(n, width, cases);
 
     return 0;
 }
