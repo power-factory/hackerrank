@@ -15,55 +15,21 @@ vector<string> split(const string &);
 
 vector<int> permutationEquation(vector<int> p)
 {
-    std::vector<int> output;
-    std::vector<int>::iterator iterator;
+    // Vector needs to be initialized with zero's as we will be accessing each of the element.
+    std::vector<int> output(p.size(), 0);
     for (int i = 0; i < p.size(); i++)
     {
-        iterator = std::find(p.begin(),p.end(),i);
-        iterator = std::find(p.begin(),p.end(),*(std::next(iterator)));
-        output.push_back(*iterator);
+        output[p[p[i] - 1] - 1] = i + 1;
     }
     return output;
 }
 
 int main()
 {
-    ofstream fout(getenv("OUTPUT_PATH"));
 
-    string n_temp;
-    getline(cin, n_temp);
-
-    int n = stoi(ltrim(rtrim(n_temp)));
-
-    string p_temp_temp;
-    getline(cin, p_temp_temp);
-
-    vector<string> p_temp = split(rtrim(p_temp_temp));
-
-    vector<int> p(n);
-
-    for (int i = 0; i < n; i++)
-    {
-        int p_item = stoi(p_temp[i]);
-
-        p[i] = p_item;
-    }
+    vector<int> p = {4, 3, 5, 1, 2};
 
     vector<int> result = permutationEquation(p);
-
-    for (size_t i = 0; i < result.size(); i++)
-    {
-        fout << result[i];
-
-        if (i != result.size() - 1)
-        {
-            fout << "\n";
-        }
-    }
-
-    fout << "\n";
-
-    fout.close();
 
     return 0;
 }
